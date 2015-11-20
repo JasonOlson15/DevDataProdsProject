@@ -12,16 +12,6 @@ set.seed(11111)
 data("iris")
 fullDataset <- iris
 
-# Linear Discriminant Analysis with Jacknifed Prediction 
-#fit <- lda(Species ~ ., data=fullDataset, na.action="na.omit", CV=TRUE)
-
-# Assess the accuracy of the prediction percent correct for each Species
-#ct <- table(fullDataset$Species, fit$class)
-#diag(prop.table(ct, 1))
-# total percent correct
-#fit_Accuracy <- sum(diag(prop.table(ct)))
-
-
 ## Create the training and test data set
 inTrain <- createDataPartition(y=fullDataset$Species, p=0.7, list=FALSE)
 trainDataset <- fullDataset[inTrain,]
