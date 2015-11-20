@@ -1,0 +1,75 @@
+Iris Prediction Application 
+========================================================
+author: Jason Olson
+date: 
+width: 1440
+height: 990
+
+Iris Species
+========================================================
+
+There are three common Iris species
+
+- Setosa
+- Versicolor
+- Virginica
+
+Telling the difference in the field can be challenging!
+
+The data used in this model and application was collected by Edgar Anderson in 1935.
+
+Data
+========================================================
+
+The data which was used to create the model was the Iris dataset. In the study 150 cases were collected (50 of each species) and 4 measurements were taken:
+
+Sepal Length, Sepal Width, Petal Length, Petal Width
+
+Here is a quick summary of the data:
+
+```{r}
+summary(iris)
+```
+
+Model Description
+========================================================
+
+The model which the application is based on is a Linear Discriminant Analysis and has approximately the following accuracy level:
+
+```{r, echo=FALSE}
+require(shiny);
+require(caret);
+require(e1071);
+require(randomForest);
+require(nnet);
+require(glmnet);
+
+set.seed(11111)
+
+data("iris")
+fullDataset <- iris
+
+## Create the training and test data set
+inTrain <- createDataPartition(y=fullDataset$Species, p=0.7, list=FALSE)
+trainDataset <- fullDataset[inTrain,]
+testDataset <- fullDataset[-inTrain,]
+
+# Generate model and test the accuracy
+model_lda <- train(Species~., data=trainDataset, method="lda")
+model_lda_Accuracy <- max(model_lda$results$Accuracy)
+predict_lda <- predict(model_lda, testDataset)
+cf_lda <- confusionMatrix(predict_lda, testDataset$Species)
+modelTest_lda_Accuracy <- cf_lda$overall["Accuracy"]
+
+modelTest_lda_Accuracy
+```
+
+The accuracy level is precise enough to quickly get an idea of which species are you are looking at while in the field.
+
+Conclusion
+========================================================
+Next time you are out looking at an Iris you'll be able to quickly tell the difference between the species by using the Iris Predication Application.
+
+![alt text](http://middlesexconservation.org/wp-content/uploads/2012/02/irissetosacanadensis.gif)
+![alt text](https://www.ct-botanical-society.org/img/pics_i/irisvers_fl.jpg)
+![alt text](https://www.prairiemoon.com/images/P/iris-virginica-shrevi-southern-blue-flag-flower2.jpg)
